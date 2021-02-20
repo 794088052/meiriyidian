@@ -1,0 +1,68 @@
+/**
+ * 最长回文串
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/20
+ */
+public class LongestPalindromicSubstring {
+    //Input: "babad"
+    //Output: "bab"
+    //Note: "aba" is also a valid answer.
+
+    /**
+     * 回文子串是一串从从左往右或者从右往左都是一样的字符串，一种是奇数对称，一种是偶数对称
+     * 1.暴力法：将所有的子串都给穷举出来，然后遍历判断是否是回文子串，最后再去取出最长的子串
+     * 2.双指针法：从每个字符同时向左向右遍历，看是否相等，
+     *
+     * @param target
+     * @return
+     */
+    public static String palindromicSubStr(String target) {
+        if (target.length() <= 1) {
+            return target;
+        }
+        byte[] bytes = target.getBytes();
+        int len = bytes.length;
+        int max = 0;
+        int maxLeft = 0;
+        int maxRight = 0;
+        for (int i = 0; i < len; i++) {
+            int left = 0;
+            int right = 0;
+            int sum = 0;
+            //两种情况分开判断,先是abba
+            if (i + 1 < len && bytes[i] == bytes[i + 1]) {
+                left = i;
+                right = i + 1;
+                while (left >= 0 && right < len && bytes[left--] == bytes[right++]) {
+                    sum = sum + 2;
+                }
+                if (sum > max) {
+                    max = sum;
+                    maxLeft = ++left;//此处是做了防止数组越界处理
+                    maxRight = --right;
+                }
+            }
+            if (i - 1 >= 0 && i + 1 < len && bytes[i + 1] == bytes[i - 1]) {
+                left = i - 1;
+                right = i + 1;
+                sum = 1;
+                while (left >= 0 && right < len && bytes[left--] == bytes[right++]) {
+                    sum = sum + 2;
+                }
+                if (sum > max) {
+                    max = sum;
+                    maxLeft = ++left;
+                    maxRight = --right;
+                }
+            }
+        }
+        return target.substring(maxLeft, maxRight + 1);
+    }
+
+    public static void main(String[] args) {
+        String sub = palindromicSubStr("bababbd");
+        System.out.println("sub = " + sub);
+    }
+
+}
