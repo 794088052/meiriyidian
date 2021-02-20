@@ -1,0 +1,96 @@
+public class TwoNumSumOfNodes {
+    public static void main(String[] args) {
+        TwoNumSumOfNodes twoNumSumOfNodes = new TwoNumSumOfNodes();
+        Node node = new Node(3);
+        Node node1 = new Node(0);
+        Node node2 = new Node(4);
+        node.setNext(node1);
+        node1.setNext(node2);
+
+        Node nodes = new Node(8);
+        Node nodes1 = new Node(9);
+        Node nodes2 = new Node(9);
+        nodes.setNext(nodes1);
+        nodes1.setNext(nodes2);
+        Node node3 = twoNumSumOfNodes.twoNumSumOfNodes(node, nodes);
+        while (node3!=null){
+            System.out.println("node3 = " + node3.getValue());
+            node3 = node3.next;
+        }
+    }
+
+    /*
+    *   输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+        输出：7 -> 0 -> 8
+        原因：342 + 465 = 807
+* */
+    //给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+    //如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+    //您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+    /**
+     * 需要考虑链表的长度不一致的情况
+     * 暴力法：直接将每个值给取出，再相加，再重新组装为链表形式
+     * 中间变量法：从头开始遍历，二者相加，如果大于10，往后面加上一位。这样就可以一遍过
+     *
+     * @param n1
+     * @param n2
+     * @return
+     */
+    public  Node twoNumSumOfNodes(Node n1, Node n2){
+        if (n1.value == 0 || n2.value == 0){
+            return null;
+        }
+        Node dummyHead = new Node(0);
+        Node node = dummyHead;
+        int carried = 0;
+        while (n1!=null || n2!=null){
+            int sum = carried;
+            if (n1!=null){
+                sum += n1.value;
+                n1 =n1.next;
+            }
+
+            if (n2!=null){
+                sum += n2.value;
+                n2 =n2.next;
+            }
+            carried = sum/10;
+            node.next =new Node(sum%10);
+            node = node.next;
+        }
+
+        if (carried>0 ){
+            node.next = new Node(carried);
+        }
+        return dummyHead.next;
+    }
+
+    static class Node {
+        private Node next;
+        private int value;
+
+        public Node(int target) {
+            value=target;
+        }
+        
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node next) {
+            this.next = next;
+        }
+
+
+    }
+}
