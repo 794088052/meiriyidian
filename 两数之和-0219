@@ -1,0 +1,43 @@
+public class TwoNumSum {
+    /*
+    * 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+        你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+    * */
+    public static void main(String[] args) {
+        int[] ints = {2, 1,7, 11, 15};
+        int[] ints1 = twoNumIndex(ints, 9);
+        for (int i : ints1) {
+            System.out.println("i = " + i);
+        }
+    }
+
+    /**
+     * 解题思路：
+     *  首先排除null和不符合题意的数据
+     *  这个时候如果采用单个int进行加减法，是需要两次for循环的，不符合题意
+     *  使用查找表来解决,通过空间换取时间
+     *
+     *  每次遍历都将数据和索引存入map中，然后每次存值之前进行对比（拿差值来map中查看是否存在）
+     *  其实所有涉及到求和或者求差都可以采用这种方式
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] twoNumIndex(int[] nums , int target){
+        if (nums == null || nums.length<= 2){
+            return null;
+        }
+        int temp = -1;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+             temp = target - nums[i];
+             if (map.containsKey(temp)){
+                 return new int[]{map.get(temp),i};
+             }else {
+                 map.put(nums[i],i);
+             }
+        }
+        return null;
+    }
+}
