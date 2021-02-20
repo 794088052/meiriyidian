@@ -1,0 +1,75 @@
+/**
+ * 给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。
+ * 请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。 你可以假设 nums1 和 nums2 不会同时为空。
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/20
+ */
+public class MedianOfTwoSortArr {
+    //    示例1：
+    //    nums1 = [1, 3]
+    //    nums2 = [2]
+    //    则中位数是 2.0
+    //    示例2：
+    //    nums1 = [1, 2]
+    //    nums2 = [3, 4]
+    //    则中位数是 (2 + 3)/2 = 2.5
+
+    public static void main(String[] args) {
+        int[] ints1 = {1, 3};
+        int[] ints2 = {4, 7};
+        double i = medianNumOfTwoArr(ints1, ints2);
+        System.out.println("i = " + i);
+    }
+
+    /**
+     * 现在先不考虑复杂度：
+     * 1.先合并数组 2.在取出中位数计算 合并数组的方式：1.创建一个大小等于二者之和合并数组。然后遍历到一半的数组就ok了，此时就可以进行数据的计算了（双指针）,
+     *
+     * @param arr1
+     * @param arr2
+     * @return
+     */
+    public static double medianNumOfTwoArr(int[] arr1, int[] arr2) {
+        if (arr1 == null || arr2 == null) {
+            if (arr1 == null){
+                if (arr1.length%2 == 0){
+                    return (double)(arr1[arr1.length/2]+arr2[arr1.length/2-1])/2;
+                }else{
+                    return arr1[arr1.length/2];
+                }
+            }else {
+                if (arr2.length%2 == 0){
+                    return (double)(arr2[arr2.length/2]+arr2[arr2.length/2-1])/2;
+                }else{
+                    return arr2[arr2.length/2];
+                }
+            }
+        }
+
+        int p1 = 0;
+        int p2 = 0;
+        int temp = 0;
+        int[] mergeArr = new int[arr1.length + arr2.length];
+        while (temp <= mergeArr.length / 2) {
+            if (p1 < arr1.length && p2 < arr2.length) {
+                if (arr1[p1] < arr2[p2]) {
+                    mergeArr[temp++] = arr1[p1++];
+                } else {
+                    mergeArr[temp++] = arr2[p2++];
+                }
+            } else if (p1 >= arr1.length) {
+                mergeArr[temp++] = arr2[p2++];
+            } else {
+                mergeArr[temp++] = arr1[p1++];
+            }
+        }
+        temp = temp - 1;
+        if (temp % 2 == 0) {
+            return (double) (mergeArr[temp] + mergeArr[temp - 1]) / 2.0;
+        } else {
+            return mergeArr[temp];
+        }
+    }
+
+}
