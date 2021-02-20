@@ -1,0 +1,44 @@
+/**
+ * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度
+ * 输入: "abcabcbb"
+ * 输出: 3
+ * 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/19
+ */
+public class NoDuplicateSubStr {
+
+    /**
+     * 滑窗法加上双指针
+     *
+     * @param target
+     * @return
+     */
+    public static int subStrMaxLen(String target){
+        int left = 0;
+        int right = 0;
+        HashMap<Character, Integer> map = new HashMap<>(256);
+        int res = 0;
+        for (int i = 0; i < target.length(); i++) {
+            char c = target.charAt(i);
+            if (map.containsKey(c)){
+                Integer num = map.get(c);
+                if (num>=left){
+                    left = num+1;
+                }
+            }
+            map.put(c,i);
+            ++right;
+            res = Math.max(res,right-left);
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        String str = "abcdbbcaebagcd";
+        int i = subStrMaxLen(str);
+        System.out.println("i = " + i);
+    }
+
+}
