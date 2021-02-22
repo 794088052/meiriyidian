@@ -1,0 +1,51 @@
+import java.util.ArrayList;
+
+/**
+ * 蛇形矩阵
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/22
+ */
+public class ZigzagConversion {
+    /**
+     * 将给定字符串按照蛇形排布，然后再进行拼接。
+     * 需要设置一个蛇形读取的字符串的规则
+     * 如何让行号在0-》n-1中间反复
+     *
+     * @param target
+     * @param n
+     * @return
+     */
+    public static String zigzagConversion(String target, int n) {
+        boolean conver = true;
+        int readLen = 0;
+        int temp = 0;
+        ArrayList<StringBuilder> subList = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            subList.add(i, new StringBuilder());
+        }
+        while (readLen < target.length()) {
+            char c = target.charAt(readLen++);
+            subList.get(temp).append(c);
+            if (conver) {
+                temp++;
+                conver = (temp == n-1) != conver;
+
+            } else {
+                temp--;
+                conver = (temp == 0)==!conver;
+
+            }
+        }
+        String res = "";
+        for (int i = 0; i < subList.size(); i++) {
+            res = res + subList.get(i).toString();
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        String s = zigzagConversion("PAYPALISHIRING", 4);
+        System.out.println("s = " + s);
+    }
+}
