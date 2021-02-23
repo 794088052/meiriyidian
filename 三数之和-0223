@@ -1,0 +1,51 @@
+/**
+ * 三数之和
+ * @author: lWX1017602
+ * @since: 2021/2/23
+ */
+public class Sum3Num {
+
+   // 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 *a，b，c ，*使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。9.25
+    // 存在等式 a=-(b+c) 暴力法去将所有选择给列出来，然后判断和是否是0，再去除重复的三元组
+    // 在通过map可以减少一层for循环
+    // 问题在于如何去重，对所有三元组进行遍历看第一二个元素是否相等
+
+    // 最优解：根据题意可知必定存在一个或两个负数之和等于一个正数；不重复的三元组可以通过先对数组进行排序来解决
+
+    public static ArrayList<int[]> sumOf3Num(int []arr) {
+        if (arr.length<3){
+            return new ArrayList<int[]>();
+        }
+        Arrays.sort(arr);
+        ArrayList<int[]> ints = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] >= 0 || i>arr.length-3 ||(i>1 && arr[i]==arr[i-1])){
+                break;
+            }
+            int b=i+1,c=arr.length-1;
+            while (b<c){
+                int sum = arr[b]+arr[c];
+                if (arr[i] == -sum){
+                    ints.add(new int[]{arr[i],arr[b++],arr[c--]});
+                }else if (arr[i] + sum> 0){
+                    c--;
+                }else {
+                    b++;
+                }
+            }
+        }
+        return ints;
+    }
+
+    public static void main(String[] args) {
+        int[] ints = {-1, 0, 1, 2, -1,-4};
+        ArrayList<int[]> list = sumOf3Num(ints);
+        for (int[] ints1 : list) {
+            for (int i = 0; i < ints1.length; i++) {
+                System.out.print(ints1[i]+",");
+            }
+            System.out.println("");
+        }
+    }
+
+}
