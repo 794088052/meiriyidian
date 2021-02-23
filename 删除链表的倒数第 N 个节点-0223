@@ -1,0 +1,79 @@
+/**
+ * 删除链表的倒数第 N 个节点
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/23
+ */
+public class RemoveNthNode {
+    /**
+     * 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+     * 给定一个链表: 1->2->3->4->5, 和 n = 2.
+     * 当删除了倒数第二个节点后，链表变为 1->2->3->5.
+     * 给定的 n 保证是有效的。
+     */
+     static class Node{
+        private int value;
+        private Node next;
+
+        public Node() {
+        }
+
+        public Node(int value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node next) {
+            this.next = next;
+        }
+    }
+
+    /**
+     * 1.直接从头向尾遍历，获取链表总长度，然后在遍历一次到指定位置断掉连接
+     * 2.一次遍历解决问题的关键在于：如何判断到了指定位置，
+     * 首先确定已有条件：链表头已有，倒数n个节点remove，通过空间换取时间
+     * 还是通过双指针的空间来减少时间
+     *
+     * @param node
+     * @param n
+     * @return
+     */
+    public static Node removeNthNode(Node node,int n){
+        Node tempNode =node;
+        int right = 0;
+        Node rNode = node;
+        while (right<n){
+            rNode = rNode.next;
+            right++;
+        }
+        while (rNode.next!=null){
+            node=node.next;
+            rNode=rNode.next;
+        }
+        node.next=node.next.next;
+        return tempNode;
+    }
+
+
+    public static void main(String[] args) {
+        // 1->2->3->4->5
+        Node node = new Node(1, new Node(2, new Node(3, new Node(4, new Node(5,null)))));
+        Node node1 = removeNthNode(node,3);
+        while (node1!=null){
+            System.out.println("node1 = " + node1.value);
+            node1=node1.next;
+        }
+    }
+}
