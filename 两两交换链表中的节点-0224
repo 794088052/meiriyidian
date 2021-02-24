@@ -1,0 +1,70 @@
+/**
+ * 两两交换链表中的节点
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/24
+ */
+public class SwapNodesInPairs {
+    /**
+     * 给定 1->2->3->4, 你应该返回 2->1->4->3.
+     * 给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+     *
+     * 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+     */
+
+    /**
+     * 1.如何确定两个节点的位置 （递归确定，每次递归会进行当前节点和后面节点的判断）
+     * 2.如何调换（通过一个中间临时节点） temp = n2 ; n1=n2.next;temp.next = n1;
+     * @param head
+     * @return
+     */
+    public Node swapNodes(Node head){
+        if (head==null || head.next==null)
+            return head;
+
+        Node temp = head.next;
+        Node after =temp.next;
+        temp.next=head;
+        head.next = swapNodes(after);
+        return temp;
+    }
+
+    public static void main(String[] args) {
+        Node node1 = new Node(2, new Node(1, new Node(3,new Node(4,null))));
+
+        Node node = new SwapNodesInPairs().swapNodes(node1);
+        while (node!=null){
+            System.out.println("node.val = " + node.val);
+            node=node.next;
+        }
+    }
+
+    static class Node{
+        private int val;
+        private Node next;
+
+        public Node() {
+        }
+
+        public Node(int val, Node next) {
+            this.val = val;
+            this.next = next;
+        }
+
+        public int getVal() {
+            return val;
+        }
+
+        public void setVal(int val) {
+            this.val = val;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node next) {
+            this.next = next;
+        }
+    }
+}
