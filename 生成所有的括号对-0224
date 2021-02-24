@@ -1,0 +1,60 @@
+/**
+ * 生成所有的括号对
+ * @author: lWX1017602
+ * @since: 2021/2/24
+ */
+public class GenerateParentheses {
+    /**
+     * 给定数字n，要求使用n对()括号生成所有合法的组合情况。
+     * 3
+     *
+     * [
+     * "((()))",
+     * "(()())",
+     * "(())()",
+     * "()(())",
+     * "()()()"
+     * ]
+     */
+
+    /**
+     * 1.暴力法，列举所有可能性，然后进行合法判断
+     * 2. n对()就是3个（3个）的组合情况，起步只能为（，而且在往后面加括号时，有一个前提是（一定是大于等于）的
+     *      构建出来的string长度为2n,根据条件构建递归函数；
+     * @param n
+     * @return
+     */
+    public static List<String> allValidSolution(int n){
+        List<String> list=new ArrayList<>();
+        int left = 0;
+        int right = 0;
+        String cus = "";
+        backtrack(list,cus,left,right,n);
+        return list;
+    }
+
+    public static void backtrack(List<String> list, String cus,int open, int close ,int n){
+        if (cus.length() == 2*n){
+            list.add(cus);
+            return ;
+        }
+        if (open<n){
+            backtrack(list,cus+"(",open+1,close,n);
+        }
+        if (open>close){
+            backtrack(list,cus+")",open,close+1,n);
+        }
+
+    }
+
+
+
+    public static void main(String[] args) {
+        List<String> strings = allValidSolution(3);
+        for (String string : strings) {
+            System.out.println("string = " + string);
+        }
+    }
+
+
+}
