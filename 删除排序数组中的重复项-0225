@@ -1,0 +1,45 @@
+/**
+ * 删除排序数组中的重复项
+ *
+ * @author: lWX1017602
+ * @since: 2021/2/25
+ */
+public class RemoveDuplicateSortArr {
+    /**
+     * 给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+     * 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+     * 示例 1:
+     * 给定数组 nums = [1,1,2],
+     * 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
+     * 你不需要考虑数组中超出新长度后面的元素。
+     */
+
+    /**
+     * 因为是排序数组，所以只需要按序遍历，判断是否相等，如果相等，取下一元素继续对比
+     * @param ints
+     * @return
+     */
+    public static int removeDupNum(int[]ints){
+        int start = 0;
+        int end =0;
+       while (end<ints.length){
+           if (ints[start] == ints[end]){
+               end++;
+           }else {
+               ints[start+1]=ints[end];
+               start=start+1;
+           }
+       }
+        return start+1;
+    }
+
+    public static void main(String[] args) {
+        int[] ints =new int[]{1,1,2,2,2,3,4,5,5,6};
+        int i = removeDupNum(ints);
+        System.out.println("i = " + i);
+        for (int i1 = 0; i1 < i; i1++) {
+            System.out.println("ints = " + ints[i1]);
+        }
+
+    }
+}
