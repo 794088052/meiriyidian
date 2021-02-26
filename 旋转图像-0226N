@@ -1,0 +1,60 @@
+/**
+ * 旋转图像
+ * @author: lWX1017602
+ * @since: 2021/2/26
+ */
+public class RotateImage {
+    /**
+     * 给定一个 n × n 的二维矩阵表示一个图像。
+     * 将图像顺时针旋转 90 度。
+     * 给定 matrix =
+     * [
+     *   [1,2,3],
+     *   [4,5,6],
+     *   [7,8,9]
+     * ],
+     * 原地旋转输入矩阵，使其变为:
+     * [
+     *   [7,4,1],
+     *   [8,5,2],
+     *   [9,6,3]
+     * ]
+     */
+
+    /**
+     * 1.根据题意可知一个元素旋转四次就会回到最初的位置，  假设它最初的位置为（i,j）,那么它顺时针旋转的三个位置为(n-1-i,n-1)
+     * @param matrix
+     */
+    public void rotate(int [][] matrix){
+        int N = matrix.length;
+        for (int i = 0; i < N/2; i++) {
+            for (int j = 0; j < (N + 1) / 2; j++) {
+                int t = matrix[i][j];
+                matrix[i][j] = matrix[N-1-j][i];
+                matrix[N-1-j][i] = matrix[N-1-i][N-1-j];
+                matrix[N-1-i][N-1-j] = matrix[j][N-1-i];
+                matrix[j][N-1-i] = t;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] nums = new int[3][3];
+        nums[0][0]=1;
+        nums[0][1]=2;
+        nums[0][2]=3;
+        nums[1][0]=4;
+        nums[1][1]=5;
+        nums[1][2]=6;
+        nums[2][0]=7;
+        nums[2][1]=8;
+        nums[2][2]=9;
+        new RotateImage().rotate(nums);
+        System.out.println("nums.length = " + nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                System.out.println("nums["+i+"]["+j+"] = " + nums[i][j]);
+            }
+        }
+    }
+}
