@@ -1,0 +1,50 @@
+/**
+ * 颜色排序
+ *
+ * @author: lWX1017602
+ * @since: 2021/3/1
+ */
+public class SortColors {
+    /**
+     * 给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+     * 此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+     * 注意: 不能使用代码库中的排序函数来解决这道题。
+     * 示例:
+     * 输入: [2,0,2,1,1,0]
+     * 输出: [0,0,1,1,2,2]
+     */
+
+    /**
+     * 1.暴力法：先遍历出0，1，2出现的个数在重新组合数组。（需要两次循环）
+     * 2.从头开始遍历，如果等于2就往数组后面交换位置，等于0就往前面交换位置 （双指针）
+     */
+
+    public int[] solution(int[] arr) {
+        int left = -1;
+        int right = arr.length ;
+        for (int i = 0; i < right; ) {
+            if (arr[i] == 1) {
+                i++;
+            } else if (arr[i] == 2) {
+                right--;
+                int temp = arr[i];
+                arr[i] = arr[right];
+                arr[right] = temp;
+            } else {
+                left++;
+                int temp = arr[i];
+                arr[i] = arr[left];
+                arr[left] = temp;
+                i++;
+            }
+        }
+        return arr;
+    }
+
+    public static void main(String[] args) {
+        int[] solution = new SortColors().solution(new int[] {2, 0, 2, 1, 1, 0});
+        for (int i = 0; i < solution.length; i++) {
+            System.out.println("i = " + solution[i]);
+        }
+    }
+}
